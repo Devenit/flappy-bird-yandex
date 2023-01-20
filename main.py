@@ -4,19 +4,29 @@ import pygame
 from pygame.locals import *
 
 
+def rand_pipe():
+    pipe_height = pipe[0].get_height()
+    between = height / 4.5
+    lower_y = between + random.randrange(0, int(height - base.get_height() - 1.2 * between))
+    upper_y = pipe_height - lower_y + between
+    pipe_x = width + 10
+    return [{'x': pipe_x, 'y': -upper_y},
+            {'x': pipe_x, 'y': lower_y}]
+
+
 # окно выбора сложности
 def start_windows():
-    standart_button = pygame.Rect(30, 165, 60, 40)
-    fast_button = pygame.Rect(200, 165, 60, 40)
+    standart_button = pygame.Rect(5, 165, 90, 40)
+    fast_button = pygame.Rect(170, 165, 90, 40)
     font = pygame.font.SysFont(None, 30)
     lvl1 = 0
     lvl2 = 1
     screen.blit(background, (0, 0))
     screen.blit(difficult, (0, 0))
-    standart = font.render('Standart', True, pygame.Color('white'))
-    screen.blit(standart, (30, 150))
-    speed = font.render('Speed', True, pygame.Color('white'))
-    screen.blit(speed, (200, 150))
+    standart = font.render('Standart speed', True, pygame.Color('white'))
+    screen.blit(standart, (5, 150))
+    speed = font.render('Fast speed', True, pygame.Color('white'))
+    screen.blit(speed, (170, 150))
     pygame.display.update()
     FPSCLOCK.tick(FPS)
     while True:
@@ -72,16 +82,6 @@ def start_game(lvl):
         screen.blit(base, (base_x, ground))
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-
-
-def rand_pipe():
-    pipe_height = pipe[0].get_height()
-    between = height / 4.5
-    lower_y = between + random.randrange(0, int(height - base.get_height() - 1.2 * between))
-    upper_y = pipe_height - lower_y + between
-    pipe_x = width + 10
-    return [{'x': pipe_x, 'y': -upper_y},
-            {'x': pipe_x, 'y': lower_y}]
 
 
 def collision(bird_x, bird_y, upper_pipes, lower_pipes):
@@ -149,7 +149,7 @@ def game_over():
                 if 280 < pygame.mouse.get_pos()[1] < 280 + home.get_height():
                     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                        start_game(0)
+                        start_windows()
 
 
 def game():
@@ -238,6 +238,9 @@ def game():
         for digit in digits:
             screen.blit(numbers[digit], (between_x, height * 0.12))
             between_x += numbers[digit].get_width()
+        font = pygame.font.SysFont(None, 25)
+        last_rec = font.render(f'Your last record: {record[0]}', True, pygame.Color('black'))
+        screen.blit(last_rec, (5, 10))
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
@@ -308,7 +311,7 @@ def game_over2():
                 if 280 < pygame.mouse.get_pos()[1] < 280 + home.get_height():
                     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                        start_game(1)
+                        start_windows()
 
 
 # 2 уровень сложности
@@ -398,6 +401,9 @@ def game2():
         for digit in digits:
             screen.blit(numbers[digit], (between_x, height * 0.12))
             between_x += numbers[digit].get_width()
+        font = pygame.font.SysFont(None, 25)
+        last_rec = font.render(f'Your last record: {record[1]}', True, pygame.Color('black'))
+        screen.blit(last_rec, (5, 10))
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
